@@ -42,7 +42,7 @@ int main() {
         }
     }
 
-    printf("\n\tSCAN DISK SCHEDULING\n\n");
+    printf("\n\tC-SCAN DISK SCHEDULING\n\n");
     seektime = 0;
 
     // Move towards higher end
@@ -52,25 +52,30 @@ int main() {
         seektime += distance;
     }
 
-    // Go to the end if not already there
     if (a[n - 1] != size - 1) {
-        distance = size - 1 - a[n - 1];
+        distance = (size - 1) - a[n - 1];
         printf("Head movement from %d to %d : %d\n", a[n - 1], size - 1, distance);
         seektime += distance;
     }
 
-    // Move back to beginning
-    if (pos > 0) {
-        printf("Head movement from %d to %d : %d\n", size - 1, a[pos - 1], size - 1 - a[pos - 1]);
-        seektime += size - 1 - a[pos - 1];
+    // Jump from end to beginning (0)
+    distance = size - 1;
+    printf("Head movement from %d to 0 : %d\n", size - 1, distance);
+    seektime += distance;
 
-        for (i = pos - 1; i > 0; i--) {
+    // Continue from 0 to the left side
+    for (i = 0; i < pos; i++) {
+        if (i == 0)
+            distance = a[i];
+        else
             distance = a[i] - a[i - 1];
-            printf("Head movement from %d to %d : %d\n", a[i], a[i - 1], distance);
-            seektime += distance;
-        }
+
+        printf("Head movement from %d to %d : %d\n", (i == 0 ? 0 : a[i - 1]), a[i], distance);
+        seektime += distance;
     }
 
     printf("\nTotal seek time is : %d\n", seektime);
     return 0;
 }
+
+
